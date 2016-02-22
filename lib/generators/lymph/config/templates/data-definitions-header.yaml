@@ -1,0 +1,34 @@
+#
+# Create a new, empty, definition file with `rails generate lymph:config`
+# Add models with `rails generate lymph:model NAME [field[:type[:index]]`
+#
+# `models` is a Hash of Rails model definitions.  The keys are the
+# names of the model files; fields in each are:
+#
+#  * indices (Array of Hash, optional)
+#    key (String, required) name of key field
+#    options:
+#      :name (String) optional index name
+#      :unique (Boolean) optional
+#  * key_fields (Array of String, optional)
+#  * valid_fields (Hash of fieldname => Ruby-type)
+#  * aliased_fields (Hash of fieldname => alternate-name) optional
+#  * connexions (Array of Hash, optional)
+#    key (String, required) local field name
+#    relation (Symbol, required) see description below
+#    foreign_model (String, required) name of the other model in the linkage
+#    foreign_key (String, required) name of the field in the foreign model
+#
+# Connexions are relationships:
+#
+# * :embeds_one
+# * :embeds_many
+# * :embedded_in
+# * :has_one
+# * :has_many
+#    :as
+# * :belongs_to
+#    :polymorphic: boolean
+# * :has_and_belongs_to_many
+# * :reference_one_to_one
+#

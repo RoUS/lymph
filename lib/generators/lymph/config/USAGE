@@ -1,0 +1,8 @@
+Description:
+    Create the initial model structure definition file.
+
+Example:
+    rails generate lymph:config
+
+    This will create:
+        config/data-definitions.yaml

@@ -1,0 +1,5 @@
+<%=
+    File.read(File.expand_path('../../config/templates/data-definitions-header.yaml',
+                               File.dirname(source)))
+%>
+<%= Lymph.definitions.to_yaml %>

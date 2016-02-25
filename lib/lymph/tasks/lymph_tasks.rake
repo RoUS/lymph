@@ -7,10 +7,23 @@ namespace(:lymph) do
   task(:graph) do
     require('lymph/graph')
     Lymph.graph!
-  end
-end
+  end                           # task(:graph)
 
-desc('Foo!')
-task(:derp) do
-  puts('Derp!')
-end
+  desc('Delete models and reset to empty definitions file')
+  task(:reset) do
+    Lymph.load_definitions
+    models	= Lymph.definitions['models'].keys
+    models.each do |model|
+      puts('%12s  model %s' % [ 'deleting', model ])
+      Dir[File.join(Rails.root, 'app', 'models', "#{model}.rb")].each do |f|
+        File.unlink(f) if (File.exists?(f))
+      end
+      Dir[File.join(Rails.root, 'test', 'models', "test_#{model}.rb")].each do |f|
+        File.unlink(f) if (File.exists?(f))
+      end
+    end
+    system('bundle exec rails generate lymph:config --force')
+  end                           # task(:reset)
+
+end                             # namespace(:lymph)
+

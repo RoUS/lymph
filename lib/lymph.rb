@@ -15,7 +15,6 @@
 #   limitations under the License.
 #++
 require('lymph/railtie') if (defined?(::Rails))
-require('psych')
 require('yaml')
 
 module Lymph

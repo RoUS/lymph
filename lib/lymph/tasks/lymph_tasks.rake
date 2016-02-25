@@ -5,6 +5,8 @@
 namespace(:lymph) do
   desc('Produce DOT graph of model relationships')
   task(:graph) do
+    require('lymph/graph')
+    Lymph.graph!
   end
 end
 

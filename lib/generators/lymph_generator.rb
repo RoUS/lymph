@@ -1,19 +1,5 @@
+require('lymph')
 module Lymph
-
-  DEFINITIONS_FILE	= 'data-definitions.yaml'
-
-  class << self
-
-    attr_accessor(:definitions)
-
-  end
-
-  def definitions
-    return ::Lymph.definitions
-  end
-  def definitions=(val)
-    ::Lymph.definitions = val
-  end
 
   module Generators
 

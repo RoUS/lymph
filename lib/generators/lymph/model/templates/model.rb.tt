@@ -1,14 +1,12 @@
 <% module_namespacing do -%>
 class <%= class_name %><%= " < #{options[:parent].classify}" if (options[:parent]) %>
+
+  include ::Lymph::Model
+
 <% definitions['models'][file_name]['connexions'].each do |cx| -%>
   <%= cx['relation'].to_s -%>(:<%= cx['foreign_model'] -%><%= cx['options']['polymorphic'] ? ', :polymorphic => true' : '' -%>)
 <% end -%>
-<% attributes.reject { |attr| attr.reference? }.each do |attribute| -%>
-  field(:<%= attribute.name %>, :type => :<%= attribute.type.to_s %>)
-<% end -%>
-<% attributes.select { |attr| attr.reference? }.each do |attribute| -%>
-  embedded_in(:<%= attribute.name %>)
-<% end -%>
+  define_model('<%= class_name -%>')
 
 end                             # class <%= class_name %>
 <% end -%>

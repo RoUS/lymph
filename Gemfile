@@ -1,14 +1,35 @@
-source 'https://rubygems.org'
+#
+# Bundler Gemfile for `lymph` Ruby gem
+#
+source('https://rubygems.org/')
 
-# Declare your gem's dependencies in lymph.gemspec.
-# Bundler will treat runtime dependencies like base dependencies, and
-# development dependencies will be added by default to the :development group.
-gemspec
+#
+# All the dependencies *could* be in the gemspec, but Bundler is
+# remarkably stupid about gems needed *by* the gemspec.
+#
+#gemspec
 
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
+RUBY_ENGINE	= 'ruby' unless (defined?(RUBY_ENGINE))
 
-# To use a debugger
-# gem 'byebug', group: [:development, :test]
+group(:default, :development, :test) do
+  gem('bundler',	'>= 1.0.7')
+  gem('ruby-graphviz')
+  gem('psych')
+  gem('versionomy',	'>= 0.4.4')
+  gem('lymph',
+      :path		=> '.')
+end
+
+group(:test, :development) do
+  gem('aruba')
+  gem('byebug')
+  gem('cucumber')
+  gem('json',		'>= 1.8.0')
+  gem('rake')
+  gem('simplecov',
+      :require		=> false)
+  gem('rdiscount')
+  gem('redcarpet',	'< 3.0.0')
+  gem('rdoc')
+  gem('yard',		'~> 0.8.6')
+end

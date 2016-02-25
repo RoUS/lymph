@@ -4,6 +4,8 @@ module Lymph
 
   class ConfigGenerator < ::Lymph::Generators::Base
 
+    include ::Lymph
+
     desc("Creates an empty model description file at config/#{DEFINITIONS_FILE}")
     source_root(File.expand_path('../templates', __FILE__))
 

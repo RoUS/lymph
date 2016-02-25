@@ -1,6 +1,21 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
+#--
+#   Copyright © 2015 Ken Coar
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#++
+
 require('generators/lymph_generator')
-require('byebug')
 
 module Lymph
 
@@ -16,19 +31,27 @@ module Lymph
              })
     hook_for(:orm, :required => true)
     check_class_collision
+    class_option(:parent,
+                 :type		=> :string,
+                 :desc 		=> 'The parent class for the generated model')
+    class_option(:indices,
+                 :type 		=> :boolean,
+                 :default 	=> true,
+                 :desc 		=> 'Add indices for :references and "belongs_to columns')
 
-    Proc.new {
-      puts(PP.pp(self.methods.map { |o| o.to_s }.sort, ''))
-    }.call
     desc("Creates a model and adds it to config/#{DEFINITIONS_FILE}")
     source_root(File.expand_path('../templates', __FILE__))
+
+    def parent_class_name
+      options[:parent] || '::ActiveRecord::Base'
+    end                         # def parent_class_name
+#    protected(:parent_class_name)
 
     def app_name
       ::Rails::Application.subclasses.first.parent.to_s.underscore
     end                         # def app_name
 
     def update_definitions_file
-      debugger
       datafile			= File.join('config', DEFINITIONS_FILE)
       self.definitions		= File.exist?(datafile) ? YAML.load(File.read(datafile)) : {}
       self.definitions['models']	||= {}
@@ -45,7 +68,6 @@ module Lymph
         'aliased_fields' 	=> [],
       }
       attributes.each do |attr|
-        debugger
         if ([:references].include?(attr.type))
           fname			= attr.name + '_id'
           ftype			= 'integer'
@@ -60,7 +82,9 @@ module Lymph
           key_fields		<< fname
           indices		<< {
             'key'		=> fname,
-            :unique		=> attr.has_uniq_index?,
+            'options'		=> {
+              :unique		=> attr.has_uniq_index?,
+            },
           }
         end
         if (connector)
